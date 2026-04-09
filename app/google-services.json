@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1081531034567",
+    "project_id": "solvebridge-77e26",
+    "storage_bucket": "solvebridge-77e26.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1081531034567:android:edf012d3c0bb013d5607e2",
+        "android_client_info": {
+          "package_name": "com.example.solve_bridge"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1081531034567-0rn23q9f1ij18umrknab2ndhhrrlmc7v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.solve_bridge",
+            "certificate_hash": "53ab4c68f6171fd45d1071144c1d75c74dbaf669"
+          }
+        },
+        {
+          "client_id": "1081531034567-8gqddjmvg5h2pneadv9ps0engl8lqb1v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAhYXsxuqr4grEsDDJ4vceJOP4sCic7WkY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1081531034567-8gqddjmvg5h2pneadv9ps0engl8lqb1v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

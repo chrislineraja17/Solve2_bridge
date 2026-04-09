@@ -1,0 +1,59 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.Solve_Bridge" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Primary brand color -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
+        <item name="colorOnPrimary">@color/white</item>
+
+        <!-- Secondary used for active indicators in M3 -->
+        <item name="colorSecondary">@color/colorPrimary</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorSecondaryContainer">@color/lightBlueBg</item>
+        <item name="colorOnSecondaryContainer">@color/colorPrimary</item>
+
+        <!-- Tertiary -->
+        <item name="colorTertiary">@color/colorSecondary</item>
+        <item name="colorOnTertiary">@color/white</item>
+        <item name="colorTertiaryContainer">@color/lightBlueBg</item>
+        <item name="colorOnTertiaryContainer">@color/colorPrimary</item>
+
+        <!-- Surfaces and Backgrounds -->
+        <item name="android:windowBackground">@color/backgroundGray</item>
+        <item name="colorSurface">@color/surfaceWhite</item>
+        <item name="colorOnSurface">@color/textPrimary</item>
+        <item name="colorSurfaceVariant">@color/backgroundGray</item>
+        <item name="colorOnSurfaceVariant">@color/textSecondary</item>
+
+        <!-- Action/Status Bar -->
+        <item name="android:statusBarColor">@color/colorPrimaryVariant</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
+
+        <!-- Selection and Ripple -->
+        <item name="colorControlHighlight">#200D47A1</item>
+        <item name="colorAccent">@color/colorPrimary</item>
+
+        <item name="navigationViewStyle">@style/Widget.SolveBridge.NavigationView</item>
+    </style>
+
+    <style name="Theme.Solve_Bridge" parent="Base.Theme.Solve_Bridge" />
+
+    <!-- Theme for Splash Screen to avoid double splash -->
+    <style name="Theme.SolveBridge.Splash" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+    </style>
+
+    <style name="Widget.SolveBridge.NavigationView" parent="Widget.Material3.NavigationView">
+        <item name="itemActiveIndicatorStyle">@style/Widget.SolveBridge.NavigationView.ActiveIndicator</item>
+        <item name="itemIconTint">@color/nav_item_tint</item>
+        <item name="itemTextColor">@color/nav_item_tint</item>
+        <item name="itemRippleColor">#200D47A1</item>
+    </style>
+
+    <style name="Widget.SolveBridge.NavigationView.ActiveIndicator">
+        <item name="android:color">@color/lightBlueBg</item>
+    </style>
+</resources>

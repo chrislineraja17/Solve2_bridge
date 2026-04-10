@@ -17,7 +17,7 @@ import java.util.Map;
 
 public class AddSolutionActivity extends AppCompatActivity {
 
-    EditText etSolution;
+    EditText etSolution, etSolutionLink;
     Button btnSubmit;
     TextView tvProblemTitle;
     String problemId, problemTitle;
@@ -30,6 +30,7 @@ public class AddSolutionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_solution);
 
         etSolution = findViewById(R.id.etSolution);
+        etSolutionLink = findViewById(R.id.etSolutionLink);
         btnSubmit = findViewById(R.id.btnSubmit);
         tvProblemTitle = findViewById(R.id.tvProblemTitle);
 
@@ -42,30 +43,29 @@ public class AddSolutionActivity extends AppCompatActivity {
 
         btnSubmit.setOnClickListener(v -> {
             String solutionText = etSolution.getText().toString().trim();
+            String solutionLink = etSolutionLink.getText().toString().trim();
 
             if (solutionText.isEmpty()) {
                 etSolution.setError("Solution cannot be empty");
                 return;
             }
 
-            saveSolution(solutionText);
+            saveSolution(solutionText, solutionLink);
         });
 
         ImageButton btnBack = findViewById(R.id.btnBack);
         btnBack.setOnClickListener(v -> finish());
     }
 
-    private void saveSolution(String solutionText) {
+    private void saveSolution(String solutionText, String solutionLink) {
         String userId = FirebaseAuth.getInstance().getUid();
-        String userName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
-        if (userName == null || userName.isEmpty()) {
-            userName = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-        }
+        String userName = FirebaseAuth.getInstance().getCurrentUser().getEmail();
 
         Map<String, Object> solution = new HashMap<>();
         solution.put("problemId", problemId);
-        solution.put("header", userName); // Saving as header for SolutionModel
-        solution.put("content", solutionText); // Saving as content for SolutionModel
+        solution.put("header", userName); 
+        solution.put("content", solutionText);
+        solution.put("solutionLink", solutionLink);
         solution.put("userId", userId);
         solution.put("likesCount", 0);
         solution.put("dislikesCount", 0);

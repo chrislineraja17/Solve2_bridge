@@ -1,6 +1,7 @@
 package com.solve_bridge.app;
 
 import android.content.Context;
+import android.text.util.Linkify;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,6 +47,14 @@ public class SolutionAdapter extends RecyclerView.Adapter<SolutionAdapter.ViewHo
         holder.tvContent.setText(solution.getContent());
         holder.likes.setText(String.valueOf(solution.getLikesCount()));
         holder.dislikes.setText(String.valueOf(solution.getDislikesCount()));
+
+        if (solution.getSolutionLink() != null && !solution.getSolutionLink().isEmpty()) {
+            holder.tvSolutionLink.setText("View Project: " + solution.getSolutionLink());
+            holder.tvSolutionLink.setVisibility(View.VISIBLE);
+            Linkify.addLinks(holder.tvSolutionLink, Linkify.WEB_URLS);
+        } else {
+            holder.tvSolutionLink.setVisibility(View.GONE);
+        }
 
         if (currentUserId != null) {
             if (solution.getLikedBy().contains(currentUserId)) {
@@ -112,13 +121,14 @@ public class SolutionAdapter extends RecyclerView.Adapter<SolutionAdapter.ViewHo
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvHeader, tvContent, likes, dislikes, btnReport;
+        TextView tvHeader, tvContent, tvSolutionLink, likes, dislikes, btnReport;
         ImageView btnLike, btnDislike;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvHeader = itemView.findViewById(R.id.tvHeader);
             tvContent = itemView.findViewById(R.id.tvContent);
+            tvSolutionLink = itemView.findViewById(R.id.tvSolutionLink);
             likes = itemView.findViewById(R.id.tvLikes);
             dislikes = itemView.findViewById(R.id.tvDislikes);
             btnLike = itemView.findViewById(R.id.btnLike);

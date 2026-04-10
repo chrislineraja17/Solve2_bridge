@@ -35,6 +35,19 @@
             android:textSize="16sp"
             android:lineSpacingExtra="3dp"/>
 
+        <TextView
+            android:id="@+id/tvSolutionLink"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="View Project: https://github.com..."
+            android:textColor="@color/colorPrimary"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:autoLink="web"
+            android:linksClickable="true"
+            android:visibility="gone"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -9,6 +9,7 @@ public class SolutionModel {
     private String id;
     private String header;
     private String content;
+    private String solutionLink;
     private int likesCount = 0;
     private int dislikesCount = 0;
     private List<String> likedBy = new ArrayList<>();
@@ -43,6 +44,14 @@ public class SolutionModel {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getSolutionLink() {
+        return solutionLink;
+    }
+
+    public void setSolutionLink(String solutionLink) {
+        this.solutionLink = solutionLink;
     }
 
     public int getLikesCount() {

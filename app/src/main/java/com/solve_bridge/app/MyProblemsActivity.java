@@ -53,16 +53,19 @@ public class MyProblemsActivity extends AppCompatActivity {
 
         String currentUserId = mAuth.getCurrentUser().getUid();
         
-        db.collection("posts")
+        db.collection("problems")
                 .whereEqualTo("userId", currentUserId)
-                .get()
-                .addOnSuccessListener(snap -> {
-                    list.clear();
-                    for (QueryDocumentSnapshot doc : snap) {
-                        Post p = doc.toObject(Post.class);
-                        list.add(p);
+                .addSnapshotListener((value, error) -> {
+                    if (error != null) return;
+                    if (value != null) {
+                        list.clear();
+                        for (QueryDocumentSnapshot doc : value) {
+                            Post p = doc.toObject(Post.class);
+                            p.setId(doc.getId());
+                            list.add(p);
+                        }
+                        adapter.notifyDataSetChanged();
                     }
-                    adapter.notifyDataSetChanged();
                 });
     }
 }

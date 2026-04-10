@@ -16,11 +16,9 @@ public class SplashActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // Removed SplashScreen.installSplashScreen(this); to avoid system icon splash
-        
         super.onCreate(savedInstanceState);
-        // We set the background in the theme for a seamless transition,
-        // but we can still keep the layout if you want to add animations later.
+        
+        // Set the content view to your custom splash layout
         setContentView(R.layout.splash_activity);
 
         // Delay for 2 seconds to show the splash screen

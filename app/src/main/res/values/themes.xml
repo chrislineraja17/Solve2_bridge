@@ -38,7 +38,7 @@
 
     <style name="Theme.Solve_Bridge" parent="Base.Theme.Solve_Bridge" />
 
-    <!-- Theme for Splash Screen to avoid double splash -->
+    <!-- Theme for Splash Activity - using a standard theme to avoid system icon splash -->
     <style name="Theme.SolveBridge.Splash" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:windowBackground">@android:color/white</item>
         <item name="android:windowFullscreen">true</item>

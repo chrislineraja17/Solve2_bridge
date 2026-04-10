@@ -17,6 +17,7 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
@@ -31,7 +32,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView user, title, desc, likes, dislikes, categoryTag;
+        TextView user, title, desc, likes, dislikes, categoryTag, userRole;
         ImageView btnLike, btnDislike;
 
         public ViewHolder(View itemView) {
@@ -44,6 +45,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             btnLike = itemView.findViewById(R.id.btnLike);
             btnDislike = itemView.findViewById(R.id.btnDislike);
             categoryTag = itemView.findViewById(R.id.tvCategoryTag);
+            userRole = itemView.findViewById(R.id.tvUserRole);
         }
     }
 
@@ -66,6 +68,30 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         holder.likes.setText(String.valueOf(post.getLikesCount()));
         holder.dislikes.setText(String.valueOf(post.getDislikesCount()));
         holder.categoryTag.setText(post.getCategory());
+
+        // Dynamic role loading: Try the saved role first, then fetch from Users collection
+        if (post.getUserRole() != null && !post.getUserRole().isEmpty()) {
+            holder.userRole.setText(post.getUserRole());
+            holder.userRole.setVisibility(View.VISIBLE);
+        } else if (post.getUserId() != null) {
+            // Fetch role if missing in post but userId exists
+            db.collection("Users").document(post.getUserId()).get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        if (documentSnapshot.exists()) {
+                            List<String> roles = (List<String>) documentSnapshot.get("roles");
+                            if (roles != null && !roles.isEmpty()) {
+                                holder.userRole.setText(roles.get(0));
+                                holder.userRole.setVisibility(View.VISIBLE);
+                            } else {
+                                holder.userRole.setText("User");
+                                holder.userRole.setVisibility(View.VISIBLE);
+                            }
+                        }
+                    });
+        } else {
+            holder.userRole.setText("User");
+            holder.userRole.setVisibility(View.VISIBLE);
+        }
 
         // Update UI based on user's interaction
         if (currentUserId != null) {

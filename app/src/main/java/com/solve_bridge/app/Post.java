@@ -7,7 +7,7 @@ import java.util.List;
 public class Post {
     @DocumentId
     private String id;
-    private String user, title, desc, category;
+    private String user, title, desc, category, userId, userRole;
     private long likesCount = 0;
     private long dislikesCount = 0;
     private List<String> likedBy = new ArrayList<>();
@@ -64,6 +64,22 @@ public class Post {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(String userRole) {
+        this.userRole = userRole;
     }
 
     public long getLikesCount() {

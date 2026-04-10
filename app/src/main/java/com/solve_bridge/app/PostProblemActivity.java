@@ -1,6 +1,7 @@
 package com.solve_bridge.app;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -9,13 +10,16 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class PostProblemActivity extends AppCompatActivity {
 
+    private static final String TAG = "PostProblemActivity";
     EditText etTitle, etDescription, etCategory;
     Button btnSubmit;
     ImageButton btnBack;
@@ -45,14 +49,34 @@ public class PostProblemActivity extends AppCompatActivity {
                 return;
             }
 
-            postProblem(title, desc, category);
+            fetchUserRoleAndPost(title, desc, category);
         });
 
         btnBack.setOnClickListener(v -> finish());
     }
 
-    private void postProblem(String title, String desc, String category) {
+    private void fetchUserRoleAndPost(String title, String desc, String category) {
         String userId = FirebaseAuth.getInstance().getUid();
+        if (userId == null) return;
+
+        db.collection("Users").document(userId).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    String role = "User";
+                    if (documentSnapshot.exists()) {
+                        List<String> roles = (List<String>) documentSnapshot.get("roles");
+                        if (roles != null && !roles.isEmpty()) {
+                            role = roles.get(0); // Take the primary role
+                        }
+                    }
+                    postProblem(title, desc, category, userId, role);
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Error fetching user role", e);
+                    postProblem(title, desc, category, userId, "User");
+                });
+    }
+
+    private void postProblem(String title, String desc, String category, String userId, String role) {
         String userEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
 
         Map<String, Object> problem = new HashMap<>();
@@ -61,12 +85,12 @@ public class PostProblemActivity extends AppCompatActivity {
         problem.put("category", category);
         problem.put("user", userEmail);
         problem.put("userId", userId);
+        problem.put("userRole", role);
         problem.put("likesCount", 0);
         problem.put("dislikesCount", 0);
         problem.put("likedBy", new java.util.ArrayList<String>());
         problem.put("dislikedBy", new java.util.ArrayList<String>());
 
-        // Changed collection to 'posts' to match your database structure
         db.collection("posts")
                 .add(problem)
                 .addOnSuccessListener(documentReference -> {

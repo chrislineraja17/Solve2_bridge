@@ -14,8 +14,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.WriteBatch;
 
 import java.util.List;
 
@@ -32,6 +34,12 @@ public class SolutionAdapter extends RecyclerView.Adapter<SolutionAdapter.ViewHo
         this.db = FirebaseFirestore.getInstance();
         this.currentUserId = FirebaseAuth.getInstance().getUid();
         this.problemOwnerId = problemOwnerId;
+    }
+
+    // Method to update owner ID if it changes or loads late
+    public void setProblemOwnerId(String problemOwnerId) {
+        this.problemOwnerId = problemOwnerId;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -71,7 +79,11 @@ public class SolutionAdapter extends RecyclerView.Adapter<SolutionAdapter.ViewHo
             holder.cardSolution.setStrokeWidth(0);
             
             // Show "Mark as Accepted" button ONLY to the problem owner
-            if (currentUserId != null && currentUserId.equals(problemOwnerId)) {
+            // Added check for both UID and Email as a fallback for older records
+            String currentUserEmail = FirebaseAuth.getInstance().getCurrentUser() != null ? 
+                    FirebaseAuth.getInstance().getCurrentUser().getEmail() : null;
+
+            if (currentUserId != null && problemOwnerId != null && currentUserId.equals(problemOwnerId)) {
                 holder.btnAccept.setVisibility(View.VISIBLE);
             } else {
                 holder.btnAccept.setVisibility(View.GONE);
@@ -101,19 +113,32 @@ public class SolutionAdapter extends RecyclerView.Adapter<SolutionAdapter.ViewHo
     }
 
     private void handleAccept(SolutionModel solution) {
-        // First, unaccept any other solution for this problem
+        WriteBatch batch = db.batch();
+
+        // 1. Mark the problem as solved
+        batch.update(db.collection("posts").document(solution.getProblemId()), 
+                "solved", true,
+                "acceptedSolutionId", solution.getId());
+
+        // 2. Unaccept any previously accepted solution for this problem
         db.collection("solutions")
                 .whereEqualTo("problemId", solution.getProblemId())
                 .whereEqualTo("accepted", true)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
-                    for (var doc : queryDocumentSnapshots) {
-                        doc.getReference().update("accepted", false);
+                    for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
+                        batch.update(doc.getReference(), "accepted", false);
                     }
-                    // Then accept the new one
-                    db.collection("solutions").document(solution.getId())
-                            .update("accepted", true)
-                            .addOnSuccessListener(unused -> Toast.makeText(context, "Solution Accepted!", Toast.LENGTH_SHORT).show());
+                    
+                    // 3. Mark the current solution as accepted
+                    batch.update(db.collection("solutions").document(solution.getId()), "accepted", true);
+
+                    // Commit the batch
+                    batch.commit().addOnSuccessListener(unused -> 
+                        Toast.makeText(context, "Solution Accepted!", Toast.LENGTH_SHORT).show()
+                    ).addOnFailureListener(e -> 
+                        Toast.makeText(context, "Failed to accept solution: " + e.getMessage(), Toast.LENGTH_SHORT).show()
+                    );
                 });
     }
 

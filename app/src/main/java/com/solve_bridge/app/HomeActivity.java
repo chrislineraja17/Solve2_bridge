@@ -139,7 +139,7 @@ public class HomeActivity extends AppCompatActivity
             // Search filter: check title and description
             boolean matchesSearch = searchLower.isEmpty() || 
                     (p.getTitle() != null && p.getTitle().toLowerCase().contains(searchLower)) ||
-                    (p.getDesc() != null && p.getDesc().toLowerCase().contains(searchLower));
+                    (p.getDescription() != null && p.getDescription().toLowerCase().contains(searchLower));
 
             // Category filter: support partial matches like "IoT" in "IoT/AI"
             boolean matchesCategory = catLower.equals("all") || 

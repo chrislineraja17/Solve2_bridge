@@ -32,7 +32,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView user, title, desc, likes, dislikes, categoryTag, userRole;
+        TextView user, title, desc, likes, dislikes, categoryTag, userRole, tvSolvedBadge;
         ImageView btnLike, btnDislike;
 
         public ViewHolder(View itemView) {
@@ -46,6 +46,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             btnDislike = itemView.findViewById(R.id.btnDislike);
             categoryTag = itemView.findViewById(R.id.tvCategoryTag);
             userRole = itemView.findViewById(R.id.tvUserRole);
+            tvSolvedBadge = itemView.findViewById(R.id.tvSolvedBadge);
         }
     }
 
@@ -64,10 +65,17 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
         holder.user.setText(post.getUser());
         holder.title.setText(post.getTitle());
-        holder.desc.setText(post.getDesc());
+        holder.desc.setText(post.getDescription());
         holder.likes.setText(String.valueOf(post.getLikesCount()));
         holder.dislikes.setText(String.valueOf(post.getDislikesCount()));
         holder.categoryTag.setText(post.getCategory());
+
+        // Solved Badge
+        if (post.isSolved()) {
+            holder.tvSolvedBadge.setVisibility(View.VISIBLE);
+        } else {
+            holder.tvSolvedBadge.setVisibility(View.GONE);
+        }
 
         // Dynamic role loading: Try the saved role first, then fetch from Users collection
         if (post.getUserRole() != null && !post.getUserRole().isEmpty()) {
@@ -118,8 +126,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             Intent intent = new Intent(context, ProblemDetailActivity.class);
             intent.putExtra("problemId", post.getId());
             intent.putExtra("title", post.getTitle());
-            intent.putExtra("description", post.getDesc());
+            intent.putExtra("description", post.getDescription());
             intent.putExtra("category", post.getCategory());
+            intent.putExtra("ownerId", post.getUserId());
             context.startActivity(intent);
         });
     }

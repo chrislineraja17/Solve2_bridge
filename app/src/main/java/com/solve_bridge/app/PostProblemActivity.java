@@ -41,21 +41,21 @@ public class PostProblemActivity extends AppCompatActivity {
 
         btnSubmit.setOnClickListener(v -> {
             String title = etTitle.getText().toString().trim();
-            String desc = etDescription.getText().toString().trim();
+            String description = etDescription.getText().toString().trim();
             String category = etCategory.getText().toString().trim();
 
-            if (title.isEmpty() || desc.isEmpty() || category.isEmpty()) {
+            if (title.isEmpty() || description.isEmpty() || category.isEmpty()) {
                 Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            fetchUserRoleAndPost(title, desc, category);
+            fetchUserRoleAndPost(title, description, category);
         });
 
         btnBack.setOnClickListener(v -> finish());
     }
 
-    private void fetchUserRoleAndPost(String title, String desc, String category) {
+    private void fetchUserRoleAndPost(String title, String description, String category) {
         String userId = FirebaseAuth.getInstance().getUid();
         if (userId == null) return;
 
@@ -68,20 +68,20 @@ public class PostProblemActivity extends AppCompatActivity {
                             role = roles.get(0); // Take the primary role
                         }
                     }
-                    postProblem(title, desc, category, userId, role);
+                    postProblem(title, description, category, userId, role);
                 })
                 .addOnFailureListener(e -> {
                     Log.e(TAG, "Error fetching user role", e);
-                    postProblem(title, desc, category, userId, "User");
+                    postProblem(title, description, category, userId, "User");
                 });
     }
 
-    private void postProblem(String title, String desc, String category, String userId, String role) {
+    private void postProblem(String title, String description, String category, String userId, String role) {
         String userEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
 
         Map<String, Object> problem = new HashMap<>();
         problem.put("title", title);
-        problem.put("desc", desc);
+        problem.put("description", description); // Changed from "desc" to "description"
         problem.put("category", category);
         problem.put("user", userEmail);
         problem.put("userId", userId);
@@ -90,6 +90,7 @@ public class PostProblemActivity extends AppCompatActivity {
         problem.put("dislikesCount", 0);
         problem.put("likedBy", new java.util.ArrayList<String>());
         problem.put("dislikedBy", new java.util.ArrayList<String>());
+        problem.put("timestamp", com.google.firebase.firestore.FieldValue.serverTimestamp());
 
         db.collection("posts")
                 .add(problem)

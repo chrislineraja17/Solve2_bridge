@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
@@ -53,8 +54,10 @@ public class MyProblemsActivity extends AppCompatActivity {
 
         String currentUserId = mAuth.getCurrentUser().getUid();
         
-        db.collection("problems")
+        // Fixed: Changed collection from "problems" to "posts" to match HomeActivity and PostProblemActivity
+        db.collection("posts")
                 .whereEqualTo("userId", currentUserId)
+                .orderBy("timestamp", Query.Direction.DESCENDING)
                 .addSnapshotListener((value, error) -> {
                     if (error != null) return;
                     if (value != null) {

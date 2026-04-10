@@ -7,23 +7,27 @@ import java.util.List;
 public class Post {
     @DocumentId
     private String id;
-    private String user, title, desc, category, userId, userRole;
+    private String user, title, description, category, userId, userRole;
     private long likesCount = 0;
     private long dislikesCount = 0;
     private List<String> likedBy = new ArrayList<>();
     private List<String> dislikedBy = new ArrayList<>();
+    private Object timestamp; // Added to handle Firestore timestamp field
+    private boolean solved = false;
+    private String acceptedSolutionId;
 
     public Post() {}
 
-    public Post(String user, String title, String desc, String category) {
+    public Post(String user, String title, String description, String category) {
         this.user = user;
         this.title = title;
-        this.desc = desc;
+        this.description = description;
         this.category = category;
         this.likesCount = 0;
         this.dislikesCount = 0;
         this.likedBy = new ArrayList<>();
         this.dislikedBy = new ArrayList<>();
+        this.solved = false;
     }
 
     public String getId() {
@@ -50,12 +54,12 @@ public class Post {
         this.title = title;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getCategory() {
@@ -114,5 +118,29 @@ public class Post {
 
     public void setDislikedBy(List<String> dislikedBy) {
         this.dislikedBy = dislikedBy;
+    }
+
+    public Object getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Object timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public boolean isSolved() {
+        return solved;
+    }
+
+    public void setSolved(boolean solved) {
+        this.solved = solved;
+    }
+
+    public String getAcceptedSolutionId() {
+        return acceptedSolutionId;
+    }
+
+    public void setAcceptedSolutionId(String acceptedSolutionId) {
+        this.acceptedSolutionId = acceptedSolutionId;
     }
 }

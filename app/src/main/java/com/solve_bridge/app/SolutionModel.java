@@ -1,6 +1,7 @@
 package com.solve_bridge.app;
 
 import com.google.firebase.firestore.DocumentId;
+import com.google.firebase.firestore.PropertyName;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +10,7 @@ public class SolutionModel {
     private String id;
     private String header;
     private String content;
+    private String solutionText; // Added to match Firestore field
     private String solutionLink;
     private String problemId;
     private String userId;
@@ -17,12 +19,14 @@ public class SolutionModel {
     private int dislikesCount = 0;
     private List<String> likedBy = new ArrayList<>();
     private List<String> dislikedBy = new ArrayList<>();
+    private Object timestamp; // Added to match Firestore field
 
     public SolutionModel() {}
 
     public SolutionModel(String header, String content) {
         this.header = header;
         this.content = content;
+        this.solutionText = content;
     }
 
     public String getId() {
@@ -42,11 +46,19 @@ public class SolutionModel {
     }
 
     public String getContent() {
-        return content;
+        return solutionText != null ? solutionText : content;
     }
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getSolutionText() {
+        return solutionText;
+    }
+
+    public void setSolutionText(String solutionText) {
+        this.solutionText = solutionText;
     }
 
     public String getSolutionLink() {
@@ -113,5 +125,13 @@ public class SolutionModel {
 
     public void setDislikedBy(List<String> dislikedBy) {
         this.dislikedBy = dislikedBy;
+    }
+
+    public Object getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Object timestamp) {
+        this.timestamp = timestamp;
     }
 }

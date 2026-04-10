@@ -2,6 +2,7 @@ package com.solve_bridge.app;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -22,7 +23,8 @@ import java.util.ArrayList;
 
 public class ProblemDetailActivity extends AppCompatActivity {
 
-    TextView tvTitle, tvDescription, tvCategory, tvLikes, tvDislikes;
+    private static final String TAG = "ProblemDetailActivity";
+    TextView tvTitle, tvDescription, tvCategory, tvLikes, tvDislikes, tvUser;
     ImageView btnLike, btnDislike;
     Button btnAddSolution;
 
@@ -46,6 +48,7 @@ public class ProblemDetailActivity extends AppCompatActivity {
         currentUserId = FirebaseAuth.getInstance().getUid();
 
         tvTitle = findViewById(R.id.tvTitle);
+        tvUser = findViewById(R.id.tvUser);
         tvDescription = findViewById(R.id.tvDescription);
         tvCategory = findViewById(R.id.tvCategory);
         tvLikes = findViewById(R.id.tvLikes);
@@ -61,6 +64,11 @@ public class ProblemDetailActivity extends AppCompatActivity {
         problemTitle = getIntent().getStringExtra("title");
         String description = getIntent().getStringExtra("description");
         String category = getIntent().getStringExtra("category");
+        problemOwnerId = getIntent().getStringExtra("ownerId");
+
+        Log.d(TAG, "Problem ID: " + problemId);
+        Log.d(TAG, "Problem Owner ID from intent: " + problemOwnerId);
+        Log.d(TAG, "Current User ID: " + currentUserId);
 
         tvTitle.setText(problemTitle);
         tvDescription.setText(description);
@@ -98,16 +106,25 @@ public class ProblemDetailActivity extends AppCompatActivity {
                     currentPost = value.toObject(Post.class);
                     if (currentPost != null) {
                         currentPost.setId(value.getId());
-                        problemOwnerId = currentPost.getUserId();
+                        
+                        // Update ownerId from DB in case intent was missing it
+                        if (currentPost.getUserId() != null) {
+                            problemOwnerId = currentPost.getUserId();
+                            Log.d(TAG, "Updated problemOwnerId from DB: " + problemOwnerId);
+                        }
+                        
+                        tvUser.setText("Posted by: " + currentPost.getUser());
                         updateLikeUI();
                         
-                        // Initialize adapter once we have the problemOwnerId
+                        // Initialize or update adapter
                         if (adapter == null) {
                             solutionList = new ArrayList<>();
                             adapter = new SolutionAdapter(solutionList, problemOwnerId);
                             recyclerSolutions.setLayoutManager(new LinearLayoutManager(this));
                             recyclerSolutions.setAdapter(adapter);
                             loadSolutions();
+                        } else {
+                            adapter.setProblemOwnerId(problemOwnerId);
                         }
                     }
                 });

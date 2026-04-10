@@ -36,7 +36,9 @@ public class MySolutionsActivity extends AppCompatActivity {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         list = new ArrayList<>();
-        adapter = new SolutionAdapter(list);
+        // In MySolutionsActivity, we don't need to show the 'Accept' button,
+        // so we pass null for problemOwnerId.
+        adapter = new SolutionAdapter(list, null);
         recyclerView.setAdapter(adapter);
 
         btnBack.setOnClickListener(v -> finish());

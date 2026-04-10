@@ -34,7 +34,7 @@ public class ProblemDetailActivity extends AppCompatActivity {
     ArrayList<SolutionModel> solutionList;
     SolutionAdapter adapter;
 
-    String problemId, problemTitle;
+    String problemId, problemTitle, problemOwnerId;
     Post currentPost;
 
     @Override
@@ -56,12 +56,6 @@ public class ProblemDetailActivity extends AppCompatActivity {
 
         recyclerSolutions = findViewById(R.id.recyclerSolutions);
 
-        solutionList = new ArrayList<>();
-        adapter = new SolutionAdapter(solutionList);
-
-        recyclerSolutions.setLayoutManager(new LinearLayoutManager(this));
-        recyclerSolutions.setAdapter(adapter);
-
         // Receive problem details from previous activity
         problemId = getIntent().getStringExtra("problemId");
         problemTitle = getIntent().getStringExtra("title");
@@ -73,7 +67,6 @@ public class ProblemDetailActivity extends AppCompatActivity {
         tvCategory.setText(category);
 
         loadProblemData();
-        loadSolutions();
 
         btnLike.setOnClickListener(v -> handleLike());
         btnDislike.setOnClickListener(v -> handleDislike());
@@ -105,7 +98,17 @@ public class ProblemDetailActivity extends AppCompatActivity {
                     currentPost = value.toObject(Post.class);
                     if (currentPost != null) {
                         currentPost.setId(value.getId());
+                        problemOwnerId = currentPost.getUserId();
                         updateLikeUI();
+                        
+                        // Initialize adapter once we have the problemOwnerId
+                        if (adapter == null) {
+                            solutionList = new ArrayList<>();
+                            adapter = new SolutionAdapter(solutionList, problemOwnerId);
+                            recyclerSolutions.setLayoutManager(new LinearLayoutManager(this));
+                            recyclerSolutions.setAdapter(adapter);
+                            loadSolutions();
+                        }
                     }
                 });
     }

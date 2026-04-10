@@ -10,6 +10,9 @@ public class SolutionModel {
     private String header;
     private String content;
     private String solutionLink;
+    private String problemId;
+    private String userId;
+    private boolean accepted = false;
     private int likesCount = 0;
     private int dislikesCount = 0;
     private List<String> likedBy = new ArrayList<>();
@@ -52,6 +55,30 @@ public class SolutionModel {
 
     public void setSolutionLink(String solutionLink) {
         this.solutionLink = solutionLink;
+    }
+
+    public String getProblemId() {
+        return problemId;
+    }
+
+    public void setProblemId(String problemId) {
+        this.problemId = problemId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public boolean isAccepted() {
+        return accepted;
+    }
+
+    public void setAccepted(boolean accepted) {
+        this.accepted = accepted;
     }
 
     public int getLikesCount() {

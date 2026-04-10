@@ -16,6 +16,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,12 +38,15 @@ public class HomeActivity extends AppCompatActivity
 
     SearchView searchView;
     ImageButton btnSearch, btnMenu;
+    ChipGroup chipGroup;
 
     FirebaseFirestore db;
     FirebaseAuth mAuth;
 
     DrawerLayout drawerLayout;
     NavigationView navigationView;
+
+    String currentCategory = "All";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +68,7 @@ public class HomeActivity extends AppCompatActivity
         searchView = findViewById(R.id.searchView);
         btnSearch = findViewById(R.id.btnSearch);
         btnMenu = findViewById(R.id.btnMenu);
+        chipGroup = findViewById(R.id.chipGroup);
 
         FloatingActionButton fabPost = findViewById(R.id.fabPost);
         fabPost.setOnClickListener(v -> {
@@ -79,6 +85,18 @@ public class HomeActivity extends AppCompatActivity
 
         loadPosts();
 
+        // CATEGORY CHIP LOGIC
+        chipGroup.setOnCheckedStateChangeListener((group, checkedIds) -> {
+            if (checkedIds.isEmpty()) {
+                currentCategory = "All";
+            } else {
+                Chip chip = findViewById(checkedIds.get(0));
+                currentCategory = chip.getText().toString();
+            }
+            Log.d(TAG, "Category changed to: " + currentCategory);
+            applyFilters(searchView.getQuery().toString());
+        });
+
         // SEARCH LOGIC
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -86,7 +104,7 @@ public class HomeActivity extends AppCompatActivity
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                filter(newText);
+                applyFilters(newText);
                 return true;
             }
         });
@@ -112,34 +130,46 @@ public class HomeActivity extends AppCompatActivity
         }
     }
 
-    private void filter(String text) {
+    private void applyFilters(String searchText) {
         filteredList.clear();
-        if (text.isEmpty()) {
-            filteredList.addAll(list);
-        } else {
-            for (Post p : list) {
-                if (p.getTitle() != null && p.getTitle().toLowerCase().contains(text.toLowerCase())) {
-                    filteredList.add(p);
-                }
+        String searchLower = searchText.toLowerCase().trim();
+        String catLower = currentCategory.toLowerCase().trim();
+
+        for (Post p : list) {
+            // Search filter: check title and description
+            boolean matchesSearch = searchLower.isEmpty() || 
+                    (p.getTitle() != null && p.getTitle().toLowerCase().contains(searchLower)) ||
+                    (p.getDesc() != null && p.getDesc().toLowerCase().contains(searchLower));
+
+            // Category filter: support partial matches like "IoT" in "IoT/AI"
+            boolean matchesCategory = catLower.equals("all") || 
+                    (p.getCategory() != null && p.getCategory().toLowerCase().contains(catLower));
+
+            if (matchesSearch && matchesCategory) {
+                filteredList.add(p);
             }
         }
+        
+        Log.d(TAG, "Filter applied. Found " + filteredList.size() + " items.");
         adapter.notifyDataSetChanged();
     }
 
     private void loadPosts() {
         db.collection("posts")
                 .addSnapshotListener((value, error) -> {
-                    if (error != null) return;
+                    if (error != null) {
+                        Log.e(TAG, "Load posts failed", error);
+                        return;
+                    }
                     if (value != null) {
                         list.clear();
-                        filteredList.clear();
                         for (QueryDocumentSnapshot doc : value) {
                             Post p = doc.toObject(Post.class);
                             p.setId(doc.getId());
                             list.add(p);
                         }
-                        filteredList.addAll(list);
-                        adapter.notifyDataSetChanged();
+                        Log.d(TAG, "Loaded " + list.size() + " posts.");
+                        applyFilters(searchView.getQuery().toString());
                     }
                 });
     }

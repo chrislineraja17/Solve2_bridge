@@ -84,6 +84,68 @@
                 android:elevation="4dp"
                 android:iconifiedByDefault="false"/>
 
+            <!-- CATEGORY CHIPS -->
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="8dp"
+                android:clipToPadding="false">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chipGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:singleSelection="true"
+                    app:selectionRequired="false">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipAll"
+                        style="@style/Widget.Material3.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="All"
+                        android:checked="true"/>
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipTech"
+                        style="@style/Widget.Material3.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tech"/>
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipIoT"
+                        style="@style/Widget.Material3.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="IoT"/>
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipWeb"
+                        style="@style/Widget.Material3.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Web"/>
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipMobile"
+                        style="@style/Widget.Material3.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Mobile"/>
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipAI"
+                        style="@style/Widget.Material3.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="AI"/>
+
+                </com.google.android.material.chip.ChipGroup>
+            </HorizontalScrollView>
+
             <!-- PROBLEM FEED -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"

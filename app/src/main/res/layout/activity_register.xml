@@ -56,47 +56,101 @@
             android:padding="24dp"
             android:gravity="center_horizontal">
 
-            <EditText
-                android:id="@+id/etName"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
-                android:background="@drawable/rounded_button"
-                android:backgroundTint="@color/surfaceWhite"
-                android:elevation="2dp"
-                android:hint="@string/name"
-                android:inputType="textPersonName"
-                android:paddingHorizontal="16dp"
                 android:layout_marginBottom="16dp"
-                android:textColor="@color/textPrimary"
-                android:textColorHint="@color/textSecondary"/>
-
-            <EditText
-                android:id="@+id/etEmail"
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
                 android:background="@drawable/rounded_button"
                 android:backgroundTint="@color/surfaceWhite"
                 android:elevation="2dp"
-                android:hint="@string/emailreg"
-                android:inputType="textEmailAddress"
-                android:paddingHorizontal="16dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_person"
+                    app:tint="@color/colorPrimary" />
+
+                <EditText
+                    android:id="@+id/etName"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:hint="@string/name"
+                    android:inputType="textPersonName"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:textColor="@color/textPrimary"
+                    android:textColorHint="@color/textSecondary" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
                 android:layout_marginBottom="16dp"
-                android:textColor="@color/textPrimary"
-                android:textColorHint="@color/textSecondary"/>
-
-            <EditText
-                android:id="@+id/etPassword"
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
                 android:background="@drawable/rounded_button"
                 android:backgroundTint="@color/surfaceWhite"
                 android:elevation="2dp"
-                android:hint="@string/passwordreg"
-                android:inputType="textPassword"
-                android:paddingHorizontal="16dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_email"
+                    app:tint="@color/colorPrimary" />
+
+                <EditText
+                    android:id="@+id/etEmail"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:hint="@string/emailreg"
+                    android:inputType="textEmailAddress"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:textColor="@color/textPrimary"
+                    android:textColorHint="@color/textSecondary" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
                 android:layout_marginBottom="24dp"
-                android:textColor="@color/textPrimary"
-                android:textColorHint="@color/textSecondary"/>
+                android:background="@drawable/rounded_button"
+                android:backgroundTint="@color/surfaceWhite"
+                android:elevation="2dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_lock"
+                    app:tint="@color/colorPrimary" />
+
+                <EditText
+                    android:id="@+id/etPassword"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:hint="@string/passwordreg"
+                    android:inputType="textPassword"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:textColor="@color/textPrimary"
+                    android:textColorHint="@color/textSecondary" />
+            </LinearLayout>
 
             <TextView
                 android:layout_width="match_parent"

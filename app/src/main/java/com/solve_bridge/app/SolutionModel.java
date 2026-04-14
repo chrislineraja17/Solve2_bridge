@@ -8,6 +8,7 @@ import java.util.List;
 public class SolutionModel {
     @DocumentId
     private String id;
+    private String userName; // Use @PropertyName to map to 'header' or 'userName'
     private String header;
     private String content;
     private String solutionText; // Added to match Firestore field
@@ -37,10 +38,22 @@ public class SolutionModel {
         this.id = id;
     }
 
-    public String getHeader() {
-        return header;
+    @PropertyName("userName")
+    public String getUserName() {
+        return userName != null ? userName : header;
     }
 
+    @PropertyName("userName")
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    @PropertyName("header")
+    public String getHeader() {
+        return header != null ? header : userName;
+    }
+
+    @PropertyName("header")
     public void setHeader(String header) {
         this.header = header;
     }

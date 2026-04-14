@@ -1,6 +1,7 @@
 package com.solve_bridge.app;
 
 import com.google.firebase.firestore.DocumentId;
+import com.google.firebase.firestore.PropertyName;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,12 +55,24 @@ public class Post {
         this.title = title;
     }
 
+    @PropertyName("description")
     public String getDescription() {
         return description;
     }
 
+    @PropertyName("description")
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @PropertyName("desc")
+    public String getDesc() {
+        return description;
+    }
+
+    @PropertyName("desc")
+    public void setDesc(String desc) {
+        this.description = desc;
     }
 
     public String getCategory() {
@@ -103,7 +116,6 @@ public class Post {
     }
 
     public List<String> getLikedBy() {
-        if (likedBy == null) likedBy = new ArrayList<>();
         return likedBy;
     }
 
@@ -112,7 +124,6 @@ public class Post {
     }
 
     public List<String> getDislikedBy() {
-        if (dislikedBy == null) dislikedBy = new ArrayList<>();
         return dislikedBy;
     }
 

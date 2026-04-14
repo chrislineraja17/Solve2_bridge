@@ -1,21 +1,23 @@
-# Add project specific ProGuard rules here.
-# You can control the set of applied configuration files using the
-# proguardFiles setting in build.gradle.
-#
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
+# Keep Firebase classes
+-keep class com.google.firebase.** { *; }
+-keep class com.google.android.gms.** { *; }
+-dontwarn com.google.firebase.ktx.**
+-dontwarn com.google.firebase.installations.ktx.**
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+# Keep your models used with Firestore
+-keep class com.solve_bridge.app.Post { *; }
+-keep class com.solve_bridge.app.SolutionModel { *; }
+-keep class com.solve_bridge.app.UserModel { *; }
 
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+# Keep names for PropertyName annotation
+-keepattributes Signature,RuntimeVisibleAnnotations,AnnotationDefault
+-keepclassmembers class * {
+    @com.google.firebase.firestore.PropertyName *;
+}
 
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
+# AndroidX and Material components
+-keep class androidx.appcompat.** { *; }
+-keep class com.google.android.material.** { *; }
+
+# Credential Manager
+-keep class androidx.credentials.** { *; }

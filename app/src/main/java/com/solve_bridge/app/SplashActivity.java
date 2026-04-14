@@ -16,6 +16,9 @@ public class SplashActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Handle the splash screen transition.
+        androidx.core.splashscreen.SplashScreen.installSplashScreen(this);
+
         super.onCreate(savedInstanceState);
         
         // Set the content view to your custom splash layout

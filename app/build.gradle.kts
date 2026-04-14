@@ -19,7 +19,8 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -45,6 +46,11 @@ dependencies {
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.database)
     implementation(libs.firebase.messaging)
+    // Add Firebase BOM to manage versions and provide common classes like Firebase
+    implementation(platform("com.google.firebase:firebase-bom:33.9.0"))
+    implementation("com.google.firebase:firebase-common")
+    implementation("com.google.firebase:firebase-common-ktx")
+    implementation("com.google.firebase:firebase-installations-ktx")
     implementation(libs.core.splashscreen)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
